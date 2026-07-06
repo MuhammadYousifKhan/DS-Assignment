@@ -135,14 +135,33 @@ Suggested order: Task 1 → 2 → 3 → 4 → stakeholder report section → cri
 
 ---
 
-## 6. Report Structure (mirrors demo report layout)
+## 6. Report Structure (mirrors demo report layout — with detailed sub-steps)
+
+The report follows the exact same **step-by-step presentation style** as the sample assignment (`final_Assessment_for_mathematics.docx`). Each task section is broken into numbered sub-sections with explicit mathematical working shown at every step.
 
 1. Title page (university, programme, module, title, **student ID**, name, word count)
 2. Table of Contents
 3. Introduction (background & purpose — URI scenario)
 4. Methodology (overview of the four mathematical approaches)
-5. Task 1: Steady-State Demand (Linear Algebra) — *Mathematical Analysis / Solution / Analysis & Results / Visualisation*
-6. Task 2: Demand Over Time (Calculus) — same sub-structure
+5. **Task 1: Steady-State Demand (Linear Algebra)**
+   - 3.1 Mathematical Analysis (Method Used: System of Linear Equations and Matrix Algebra)
+   - 3.2 Solution
+     - 3.2.1 Formation of the Augmented Matrix
+     - 3.2.2 Gaussian Elimination Step-by-Step
+     - 3.2.3 Back Substitution
+     - 3.2.4 Python Verification
+   - 3.3 Analysis and Results
+   - 3.4 Visualisation
+6. **Task 2: Demand Over Time (Calculus)**
+   - 4.1 Mathematical Analysis (Method Used: Differential Calculus)
+   - 4.2 Solution
+     - 4.2.1 Application of the Power Rule for Differentiation
+     - 4.2.2 Identification of Critical Points
+     - 4.2.3 Second Derivative Test for Classification
+     - 4.2.4 Inflection Point Analysis
+     - 4.2.5 Intervals of Increase and Decrease
+   - 4.3 Analysis and Results
+   - 4.4 Visualisation
 7. Task 3: Forecasting Errors (Probability) — same sub-structure
 8. Task 4: Consumption by Building Type (Statistics) — same sub-structure
 9. Stakeholder Report (≈1000 words, non-technical: meaning & implications of all findings)
@@ -209,7 +228,16 @@ This section tracks what was completed in each build session. Update after every
   - [x] Verified: det(A)=12, rank=4, κ=7.92 (well-conditioned)
   - [x] Code: `code/task1_linear_algebra.py` — runnable, commented
   - [x] Figure: `figures/fig_task1_zone_demands.png` — seaborn bar chart
-  - [x] Report section in `report.docx` (theory → solution → analysis → visualisation)
+  - [x] **Full report section in `DS_Assignment_Session1_Report.docx`:**
+    - 3.1 Mathematical analysis (Ax=b, matrix properties)
+    - 3.2.1 Augmented matrix formation
+    - 3.2.2 Gaussian elimination (3 elimination steps with intermediate matrices)
+    - 3.2.3 Back substitution (x₄→x₃→x₂→x₁)
+    - 3.2.4 Python verification with full console output embedded
+    - 3.2.4 Properties table (det, rank, condition number, residual)
+    - 3.3 Analysis and results
+    - 3.4 Visualisation (Figure 1 embedded)
+    - Appendix with full code
   - [x] Code explanation in `code_explanation.docx`
 
 - [x] Task 2 — Demand Over Time (Calculus)
@@ -218,10 +246,29 @@ This section tracks what was completed in each build session. Update after every
   - [x] Inflection point: t=1.5 (D=99)
   - [x] Code: `code/task2_calculus.py` — runnable, commented, sympy verification
   - [x] Figure: `figures/fig_task2_demand_curve.png` — two-panel D(t) + D′(t)
-  - [x] Report section in `report.docx`
+  - [x] **Full report section in `DS_Assignment_Session1_Report.docx`:**
+    - 4.1 Mathematical analysis (differential calculus)
+    - 4.2.1 Power rule application (term-by-term)
+    - 4.2.2 Critical point identification (factoring)
+    - 4.2.3 Second derivative test (classification)
+    - 4.2.4 Inflection point analysis
+    - 4.2.5 Intervals of increase/decrease (with table)
+    - 4.2.6 Python verification with full console output embedded
+    - 4.3 Analysis and results
+    - 4.4 Visualisation (Figure 2 embedded)
+    - Appendix with full code
   - [x] Code explanation in `code_explanation.docx`
 
-- [x] Document skeletons created: `report.docx` (title page, ToC, intro, methodology, refs, appendix) and `code_explanation.docx`
+- [x] Report structure matches sample assignment (`final_Assessment_for_mathematics.docx`):
+  - [x] Title page, Table of Contents, Introduction, Methodology
+  - [x] Step-by-step mathematical working (hand-style typed)
+  - [x] Python code embedded in report sections
+  - [x] Python console outputs embedded (not placeholders)
+  - [x] Figures embedded with captions
+  - [x] References (Harvard style)
+  - [x] Appendix with complete runnable code
+
+**Deliverable:** `DS_Assignment_Session1_Report.docx` (213 KB) — ready for submission
 
 **Pending for Session 2:**
 - [ ] Task 3 — Forecasting Error Risk (Probability)
