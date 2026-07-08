@@ -270,8 +270,24 @@ This section tracks what was completed in each build session. Update after every
 
 **Deliverable:** `DS_Assignment_Session1_Report.docx` (213 KB) — ready for submission
 
-**Pending for Session 2:**
-- [ ] Task 3 — Forecasting Error Risk (Probability)
+**Completed in Session 2 (7 June 2026 — 25%):**
+- [x] Task 3 — Forecasting Error Risk (Probability)
+  - [x] Normal distribution N(0, σ=5) analysis
+  - [x] P(|error| > 5) = 31.73%, P(|error| > 10) = 4.55%, P(|error| > 15) = 0.27%
+  - [x] Z-score calculations: z=1.0, 2.0, 3.0 for ±5, ±10, ±15 thresholds
+  - [x] Risk management interpretation: ±10 buffer covers 95.45% of days
+  - [x] Code: `code/task3_probability.py` — runnable, commented
+  - [x] Figure: `figures/fig_task3_normal_curve.png` — normal curve with shaded tails
+  - [x] Full report section in `Report_Session1.docx`:
+    - 5.1 Mathematical analysis (normal distribution, z-scores)
+    - 5.2 Solution (probability calculations for 1σ, 2σ, 3σ)
+    - 5.3 Analysis and results (risk management interpretation)
+    - 5.4 Visualisation (Figure 3 embedded)
+    - References: Ross (2019), Grimmett & Stirzaker (2020)
+    - Appendix with full code
+  - [x] Code explanation in `code_explanation.docx`
+
+**Pending for Session 2 (remaining):**
 - [ ] Task 4 — Consumption by Building Type (Statistics)
 
 **Pending for Session 3:**

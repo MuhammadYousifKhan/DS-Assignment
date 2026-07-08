@@ -413,6 +413,137 @@ add_para(
 )
 
 # ============================================================
+# TASK 3: FORECASTING ERROR RISK (PROBABILITY)
+# ============================================================
+add_heading_styled('Task 3: Forecasting Error Risk (Probability)', level=1)
+
+# 3.1 What the Problem Is Asking
+add_heading_styled('3.1 What the Problem Is Asking', level=2)
+
+add_para(
+    'We are creating daily forecasts of resource demand. These forecasts are never perfect - '
+    'there will always be errors between predicted and actual demand. The errors come from two '
+    'sources: behavioural variability (residents use more or less than expected on any given day) '
+    'and environmental factors (weather, temperature, special events).'
+)
+
+add_para(
+    'The key question for planners is: how big are the forecast errors likely to be? If errors are '
+    'small, we can rely on the forecasts. If errors can be large, we need contingency buffers. '
+    'We assume the errors follow a normal distribution with mean 0 (no systematic bias - forecasts '
+    'are equally likely to overestimate as underestimate) and standard deviation 5 units.'
+)
+
+# 3.2 The Mathematics Behind It
+add_heading_styled('3.2 The Mathematics Behind It - Normal Distribution', level=2)
+
+add_para(
+    'A normal distribution is a bell-shaped curve defined by two parameters: the mean (centre) and '
+    'standard deviation (spread). For our errors, mean = 0 means the errors centre on zero (unbiased), '
+    'and standard deviation = 5 means about 68% of errors are within ±5 units of zero.'
+)
+
+add_para(
+    'The empirical rule (68-95-99.7 rule) is important:',
+    bold=True
+)
+add_bullet('About 68% of values lie within ±1σ (i.e., ±5 units)')
+add_bullet('About 95% of values lie within ±2σ (i.e., ±10 units)')
+add_bullet('About 99.7% of values lie within ±3σ (i.e., ±15 units)')
+
+add_para(
+    'To compute exact probabilities, we use z-scores. A z-score measures how many standard deviations '
+    'a particular threshold is from the mean: z = (x − μ)/σ. For threshold 10: z = (10 − 0)/5 = 2.0. '
+    'We then use the cumulative distribution function (CDF) to find the probability that a value '
+    'exceeds this threshold.'
+)
+
+# 3.3 Step-by-Step Solution
+add_heading_styled('3.3 Step-by-Step Solution', level=2)
+
+add_heading_styled('Step 1: Computing Tail Probabilities', level=3)
+add_para(
+    'For a threshold t, we want P(|error| > t), which is the probability the error magnitude exceeds t. '
+    'Since the normal distribution is symmetric, P(|error| > t) = 2 × P(error > t).'
+)
+
+add_para(
+    'P(error > t) is found using the survival function = 1 − CDF(z) where z = t/5.',
+    bold=True
+)
+add_bullet('For t = 5: z = 1.0, P(|error| > 5) = 2 × (1 − 0.8413) = 0.3173 (31.73%)')
+add_bullet('For t = 10: z = 2.0, P(|error| > 10) = 2 × (1 − 0.9772) = 0.0456 (4.56%)')
+add_bullet('For t = 15: z = 3.0, P(|error| > 15) = 2 × (1 − 0.9987) = 0.0027 (0.27%)')
+
+add_heading_styled('Step 2: Buffer Coverage Interpretation', level=3)
+add_para(
+    'The complement probabilities give us the buffer coverage:'
+)
+add_bullet('Buffer ±5: covers 68.27% of days → 31.73% of days will exceed this')
+add_bullet('Buffer ±10: covers 95.45% of days → only 4.55% of days exceed')
+add_bullet('Buffer ±15: covers 99.73% of days → only 0.27% exceed (about 1 day per year)')
+
+# 3.4 Python Code - Line by Line
+add_heading_styled('3.4 The Python Code - Line by Line', level=2)
+
+add_para('The script is in code/task3_probability.py. Here is what each section does:')
+
+add_para('Section 1 - Distribution Parameters (Lines 18-19):', bold=True)
+add_para(
+    'We set mu = 0 (mean) and sigma = 5 (standard deviation). These define the normal distribution '
+    'that models the forecast errors.'
+)
+
+add_para('Section 2 - Probability Calculations (Lines 24-35):', bold=True)
+add_para(
+    'We define thresholds of interest: 5, 10, and 15 units (corresponding to 1, 2, and 3 standard '
+    'deviations). For each threshold, we compute P(|error| > t) using stats.norm.cdf(t) which gives '
+    'the cumulative probability up to t. Since we want the tail probability beyond t, we compute '
+    '1 - cdf(t), and since we want both tails (positive and negative errors), we multiply by 2.'
+)
+
+add_para('Section 3 - Visualisation (Lines 43-80):', bold=True)
+add_para(
+    'We create a normal curve plot using matplotlib. The x-axis runs from -4σ to +4σ to show the '
+    'full range of possible errors. The main curve is plotted using stats.norm.pdf. We then fill '
+    'the tail regions beyond ±5, ±10, and ±15 with different colours and transparency. Vertical '
+    'dashed lines mark each threshold. Annotations on the plot show the probability of exceeding '
+    'each threshold. The figure is saved as fig_task3_normal_curve.png.'
+)
+
+add_para('Section 4 - Risk Management Interpretation (Lines 83-87):', bold=True)
+add_para(
+    'We print a summary table showing what buffer level covers what percentage of days. This '
+    'directly informs contingency planning: a ±10 unit buffer will be adequate for 95% of days, '
+    'while a ±15 unit buffer covers 99.7% of days but ties up more resources than necessary.'
+)
+
+# 3.5 Understanding the Results
+add_heading_styled('3.5 Understanding the Results', level=2)
+
+add_para(
+    'The results show that forecast errors follow a predictable pattern described by the normal '
+    'distribution. About two-thirds of the time (68.3%), the error will be within ±5 units. '
+    'About 95% of the time, the error will be within ±10 units. Only about once in every 370 days '
+    '(0.27%) will the error exceed ±15 units.'
+)
+
+add_para(
+    'For practical planning, a contingency buffer of ±10 units provides a good balance: it covers '
+    'almost all normal operations (95.4% of days) while not wasting resources that could be used '
+    'elsewhere. A ±15 unit buffer is overly conservative - covering 99.7% of days but requiring '
+    'three times the reserve capacity. The remaining 0.3% of exceptional days (about one per year) '
+    'can be handled through emergency procedures rather than standing reserves.'
+)
+
+add_para(
+    'It is important to note the limitations: the normal distribution assumption means we are '
+    'assuming errors are symmetric and not too extreme. In practice, during unusual events '
+    '(heatwaves, festivals, major disruptions), errors may be larger. The standard deviation '
+    'σ = 5 should be periodically recalibrated using actual forecast performance data.'
+)
+
+# ============================================================
 # SAVE
 # ============================================================
 output_path = 'code_explanation.docx'
