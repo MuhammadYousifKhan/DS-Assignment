@@ -544,6 +544,210 @@ add_para(
 )
 
 # ============================================================
+# TASK 4: CONSUMPTION BY BUILDING TYPE (STATISTICS)
+# ============================================================
+add_heading_styled('Task 4: Consumption by Building Type (Statistics)', level=1)
+
+# 4.1 What the Problem Is Asking
+add_heading_styled('4.1 What the Problem Is Asking', level=2)
+
+add_para(
+    'We have data on daily water consumption from three types of residential buildings: '
+    'Apartments (8 observations), Terraced houses (10 observations), and Detached houses '
+    '(6 observations). The sample sizes are unequal because data collection in real-world '
+    'settings rarely produces perfectly balanced groups. The question is: do these building '
+    'types have different average daily consumption, or could the observed differences simply '
+    'be due to random chance?'
+)
+
+add_para('The data:')
+add_bullet('Apartments (n=8): 16.8, 17.2, 16.5, 17.9, 18.1, 17.4, 16.9, 17.6')
+add_bullet('Terraced (n=10): 18.4, 18.9, 19.1, 18.7, 19.3, 18.6, 19.0, 18.8, 19.2, 18.5')
+add_bullet('Detached (n=6): 20.1, 19.7, 20.4, 19.9, 20.6, 20.2')
+
+# 4.2 The Mathematics Behind It
+add_heading_styled('4.2 The Mathematics Behind It - One-Way ANOVA', level=2)
+
+add_para(
+    'One-way ANOVA (Analysis of Variance) is a statistical method used to compare means '
+    'across three or more groups. It is called "one-way" because there is one categorical '
+    'independent variable (building type) and one continuous dependent variable (consumption).'
+)
+
+add_para('Key concepts in ANOVA:', bold=True)
+
+add_para('Null Hypothesis (H0):', bold=True)
+add_para('All group means are equal: mean_apartments = mean_terraced = mean_detached. '
+         'Any observed differences are due to random variation within the groups.')
+
+add_para('Alternative Hypothesis (H1):', bold=True)
+add_para('At least one group mean differs from the others. The observed differences are '
+         'too large to be explained by random variation alone.')
+
+add_para('The F-statistic:', bold=True)
+add_para(
+    'ANOVA works by comparing two sources of variation: (1) variation between groups '
+    '(how far each group mean is from the overall mean) and (2) variation within groups '
+    '(how far individual observations are from their own group mean). The F-statistic is '
+    'the ratio of between-group variation to within-group variation. A large F-value means '
+    'the differences between groups are large compared to the natural variation within groups, '
+    'suggesting a real difference exists.'
+)
+
+add_para('Assumptions:', bold=True)
+add_para(
+    'Three key assumptions must be checked: (1) Independence - observations are independent '
+    'of each other (satisfied by the study design), (2) Normality - each group follows a '
+    'normal distribution (checked with Shapiro-Wilk test), and (3) Homogeneity of variances '
+    '- the variance is approximately equal across groups (checked with Levene\'s test). '
+    'ANOVA is robust to mild violations of normality, especially with equal or nearly equal '
+    'sample sizes.'
+)
+
+add_para('Tukey HSD (Honestly Significant Difference):', bold=True)
+add_para(
+    'If ANOVA finds a significant difference, we need to know which pairs of groups differ. '
+    'Tukey\'s HSD test performs all pairwise comparisons while controlling the "family-wise '
+    'error rate" - the probability of making at least one false discovery across all comparisons. '
+    'It handles unequal sample sizes automatically.'
+)
+
+# 4.3 Step-by-Step Solution
+add_heading_styled('4.3 Step-by-Step Solution', level=2)
+
+add_heading_styled('Step 1: Compute Descriptive Statistics', level=3)
+add_para(
+    'For each group, we calculate the mean, standard deviation, minimum, and maximum. '
+    'This gives us a first look at the data:'
+)
+add_bullet('Apartments: mean = 17.30, SD = 0.56, range [16.5, 18.1]')
+add_bullet('Terraced: mean = 18.85, SD = 0.30, range [18.4, 19.3]')
+add_bullet('Detached: mean = 20.15, SD = 0.33, range [19.7, 20.6]')
+add_para(
+    'Already we can see clear separation: the means are approximately 17.3, 18.9, and 20.2, '
+    'with small standard deviations relative to the gaps between groups.'
+)
+
+add_heading_styled('Step 2: Check Assumptions', level=3)
+add_para('Normality (Shapiro-Wilk Test):', bold=True)
+add_para(
+    'For each group, we compute the Shapiro-Wilk W statistic and its p-value. A p-value > 0.05 '
+    'means we cannot reject normality. All three groups pass: Apartments (W=0.97, p=0.92), '
+    'Terraced (W=0.97, p=0.89), Detached (W=0.99, p=0.99). This confirms the normality '
+    'assumption is reasonable.'
+)
+
+add_para('Equal Variances (Levene\'s Test):', bold=True)
+add_para(
+    'Levene\'s test returns Levene = 2.49, p = 0.1071. Since p > 0.05, the variances are '
+    'not significantly different, so the equal variance assumption is met. Standard one-way '
+    'ANOVA is appropriate.'
+)
+
+add_heading_styled('Step 3: Perform One-Way ANOVA', level=3)
+add_para(
+    'scipy.stats.f_oneway computes the F-statistic and p-value. The F-statistic is calculated '
+    'by computing the between-group mean square and dividing by the within-group mean square. '
+    'For our data: F(2, 21) = 84.95, p < 0.000001. This is a very large F-value, indicating '
+    'that the between-group variation dwarfs the within-group variation.'
+)
+
+add_para(
+    'Since p < 0.05, we reject the null hypothesis. There is strong statistical evidence that '
+    'at least one building type has a different mean consumption from the others.'
+)
+
+add_heading_styled('Step 4: Post-Hoc Testing (Tukey HSD)', level=3)
+add_para(
+    'The Tukey HSD test from statsmodels performs all three pairwise comparisons:'
+)
+add_bullet('Apartments vs Detached: difference = 2.85, p < 0.001, 95% CI [2.29, 3.41]')
+add_bullet('Apartments vs Terraced: difference = 1.55, p < 0.001, 95% CI [1.06, 2.04]')
+add_bullet('Detached vs Terraced: difference = -1.30, p < 0.001, 95% CI [-1.83, -0.77]')
+add_para(
+    'All three comparisons are statistically significant (p < 0.05). The confidence intervals '
+    'do not include zero, confirming that each building type has a distinct consumption level. '
+    'The "reject=True" column in the output confirms rejection of the null hypothesis for '
+    'each pair.'
+)
+
+# 4.4 Python Code - Line by Line
+add_heading_styled('4.4 The Python Code - Line by Line', level=2)
+
+add_para('The script is in code/task4_statistics.py. Here is what each section does:')
+
+add_para('Section 1 - Data Setup (Lines 16-26):', bold=True)
+add_para(
+    'We define three NumPy arrays containing the consumption data for each building type. '
+    'The groups dictionary maps group names to their data arrays for easy iteration. '
+    'The sample sizes are explicitly n=8, n=10, and n=6.'
+)
+
+add_para('Section 2 - Descriptive Statistics (Lines 32-42):', bold=True)
+add_para(
+    'We print a formatted table showing n, mean, standard deviation (using ddof=1 for sample '
+    'SD), minimum, and maximum for each group. This provides an initial overview before any '
+    'inferential testing.'
+)
+
+add_para('Section 3 - Assumption Checks (Lines 48-80):', bold=True)
+add_para(
+    'scipy.stats.shapiro computes the Shapiro-Wilk test for each group. The null hypothesis '
+    'is that the data follows a normal distribution. A high p-value (> 0.05) means we cannot '
+    'reject normality. scipy.stats.levene tests whether group variances are equal. Its null '
+    'hypothesis is that all variances are equal. A p-value > 0.05 means the equal variance '
+    'assumption is met.'
+)
+
+add_para('Section 4 - ANOVA (Lines 86-103):', bold=True)
+add_para(
+    'scipy.stats.f_oneway performs the one-way ANOVA. It takes the data arrays as separate '
+    'arguments and returns the F-statistic and p-value. We print the hypotheses, significance '
+    'level, and decision rule. If p < 0.05, we reject H0 and conclude at least one group differs.'
+)
+
+add_para('Section 5 - Tukey HSD (Lines 113-127):', bold=True)
+add_para(
+    'We concatenate all data into a single array and create a labels array indicating which '
+    'group each value belongs to. pairwise_tukeyhsd from statsmodels performs the post-hoc '
+    'test. It prints a table showing each pair, the mean difference, adjusted p-value, '
+    'confidence interval, and whether to reject the null hypothesis for that pair.'
+)
+
+add_para('Section 6 - Visualisation (Lines 133-165):', bold=True)
+add_para(
+    'We use seaborn boxplot to show the distribution of each group, with stripplot overlay '
+    'showing individual data points. Red diamond markers indicate group means. The figure '
+    'is saved as fig_task4_boxplot.png. This visualisation helps stakeholders see the clear '
+    'separation between groups at a glance.'
+)
+
+# 4.5 Understanding the Results
+add_heading_styled('4.5 Understanding the Results', level=2)
+
+add_para(
+    'The analysis conclusively shows that different building types have different consumption '
+    'patterns. The ANOVA F(2,21) = 84.95, p < 0.001 is a very strong result - the probability '
+    'of observing such extreme differences by chance alone is less than 1 in a million. All '
+    'three pairwise comparisons (via Tukey HSD) are significant, meaning each building type '
+    'is distinct from the others.'
+)
+
+add_para(
+    'The practical significance is also substantial. Detached homes consume 2.85 units more '
+    'per day than apartments, a 16.5% increase. For a city with thousands of households, this '
+    'represents a massive cumulative difference. Energy efficiency programmes should prioritise '
+    'detached homes, where the potential savings per household are greatest.'
+)
+
+add_para(
+    'The lower consumption in apartments likely reflects their shared infrastructure, smaller '
+    'living spaces, and greater thermal efficiency from having neighbouring units. Terraced '
+    'houses fall in between, benefiting from shared walls but having more space than '
+    'apartments. These results justify targeted, building-type-specific intervention strategies.'
+)
+
+# ============================================================
 # SAVE
 # ============================================================
 output_path = 'code_explanation.docx'
