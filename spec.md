@@ -204,7 +204,7 @@ The report follows the exact same **step-by-step presentation style** as the sam
 ## 10. Definition of Done (checklist)
 
 - [x] All four tasks solved by hand-style working **and** verified in Python (numbers match).
-- [ ] Task 4 explicitly addresses unequal sample sizes (ANOVA/Welch + Tukey).
+- [x] Task 4 explicitly addresses unequal sample sizes (ANOVA/Welch + Tukey).
 - [x] Every task section: theory, solution, screenshot evidence, figure, interpretation.
 - [ ] ≈1000-word stakeholder results section written in plain English.
 - [ ] Critical evaluation covers assumptions, limitations, reliability, policy implications, and an originality element.
@@ -287,11 +287,31 @@ This section tracks what was completed in each build session. Update after every
     - Appendix with full code
   - [x] Code explanation in `code_explanation.docx`
 
-**Pending for Session 2 (remaining):**
-- [ ] Task 4 — Consumption by Building Type (Statistics)
+**Completed in Session 2 (14 July 2026 — 25%):**
+- [x] Task 4 — Consumption by Building Type (Statistics)
+  - [x] Unequal sample sizes handled correctly (n=8, 10, 6)
+  - [x] Descriptive statistics per group (mean, SD, n, min, max)
+  - [x] Assumption checks: Shapiro-Wilk (normality — all pass), Levene's test (equal variances — pass)
+  - [x] One-way ANOVA: F(2,21) = 84.95, p < 0.000001 → significant difference
+  - [x] Tukey HSD post-hoc: All three pairwise comparisons significant (p < 0.001)
+  - [x] Code: `code/task4_statistics.py` — runnable, commented
+  - [x] Figure: `figures/fig_task4_boxplot.png` — seaborn boxplot with stripplot overlay
+  - [x] Full report section in `Report_Session1.docx`:
+    - 6.1 Mathematical analysis (one-way ANOVA, Tukey HSD)
+    - 6.2 Solution (descriptives, assumption checks, ANOVA, Tukey HSD)
+    - 6.2.5 Python verification with full console output embedded
+    - 6.3 Analysis and results (targeted efficiency interventions)
+    - 6.4 Visualisation (Figure 4 embedded)
+    - References: Devore (2015), Montgomery (2017)
+    - Appendix with full code
+  - [x] Code explanation in `code_explanation.docx`
+  - [x] Report builder (`build_final_report.py`) updated with full Task 3 + Task 4 sections
+- [x] Conclusion (Section 7) added to `Report_Session1.docx`:
+  - Humanised, simple language summarising all four tasks
+  - Practical implications for city planners
+  - Placed before References section
 
 **Pending for Session 3:**
 - [ ] Stakeholder results section (~1000 words)
 - [ ] Critical evaluation
-- [ ] Conclusion
 - [ ] Final polish (word count, formatting, references, appendix)
